@@ -7,20 +7,25 @@
 </head>
 <body>
     <h1>only for testing</h1>
+    <h2 id="ct"></h2>
     <script>
         var ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
 
-        ws.opopen=function(){
+        ws.onopen=function(event) {
             console.log('websocket connection open...',event);
             ws.send("Hello server, this is client!");
         };
-        ws.onmessage=function(event){
+        ws.onmessage=function(event) {
             console.log('Message Received from server...',event.data);
+            console.log('type of event data',typeof(event.data));
+            var data=JSON.parse(event.data);
+            console.log('type of parsed data',typeof(data));
+            document.getElementById("ct").innerText=data.count;
         };
-        ws.onerror=function(event){
+        ws.onerror=function(event) {
             console.log('websocket Error occurred...',event);
         };
-        ws.onclose=function(event){
+        ws.onclose=function(event) {
             console.log('websocket connection closed...',event);
         };
     </script>
